@@ -1,0 +1,98 @@
+<?php
+// phpcs:disable Magento2.Templates.ThisInTemplate
+
+/**
+ * @var $block MageSuite\WidgetNotificationModal\Block\Widget\NotificationModal
+ * @var $escaper Magento\Framework\Escaper
+ */
+
+$customerHelper = $this->helper(\MageSuite\Frontend\Helper\Customer::class);
+$imageTypeHelper = $this->helper(\MageSuite\ThemeHelpers\Helper\ImageType::class);
+$isLoggedIn = $customerHelper->isLoggedIn();
+$userType = $block->getData('user_type');
+$canShowBlockToUser = $userType == 'all' || $userType == 'logged' && $isLoggedIn || $userType == 'guest' && !$isLoggedIn;
+
+$nameInLayout = $block->getNameInLayout();
+$cmsBlockId = $block->getData('block_id');
+$modalId = 'notification-modal-' . $nameInLayout;
+
+$contentMode = $block->getData('content_mode');
+$imageMobile = $block->getData('image_mobile');
+$imageDesktop = $block->getData('image_desktop');
+
+$modalType = $block->getData('type');
+$modalType = !$modalType || $modalType == 'default' ? 'popup' : $modalType;
+
+$showAfter = $block->getData('show_after');
+$triggerSelectors = $block->getData('trigger_selectors');
+
+$removeModalSpaces = $block->getData('remove_spaces');
+$title = $block->getData('title');
+$modalPosition = $block->getData('modal_position');
+$aspectRatio = $block->getData('aspect_ratio');
+
+$dateFrom = $block->getData('date_from');
+$dateTo = $block->getData('date_to');
+
+$reopenPolicy = $block->getData('reopen_policy');
+$cookieExpiration = (int)$block->getData('cookie_expiration');
+
+$additionalModalClasses = $removeModalSpaces ? ' cs-notification-modal__modal--no-spaces' : '';
+$additionalModalClasses .= !$modalType || $modalType == 'popup' ? ' cs-notification-modal__modal--popup-on-mobile' : '';
+$additionalModalClasses .= (!$modalType || $modalType == 'popup') && $modalPosition && $modalPosition != 'default' ? '  cs-notification-modal__modal--positioned cs-notification-modal__modal--' . $modalPosition : '';
+
+$copyToclipboardId = 'copytoclipboard-' . $nameInLayout;
+?>
+<?php if (($contentMode == 'cms_block' && $cmsBlockId) || ($contentMode == 'image' && $imageMobile) && $canShowBlockToUser) : ?> <?php // phpcs:ignore ?>
+    <?php
+    $blockContent = $this->getLayout()
+        ->createBlock(\MageSuite\ThemeHelpers\Block\Cms\CacheableBlock::class)
+        ->setBlockId($cmsBlockId)
+        ->toHtml();
+    ?>
+    <div class="cs-notification-modal">
+        <div id="<?= /* @noEscape */ $modalId ?>" style="display: none;
+                aspect-ratio:<?= $escaper->escapeHtml($aspectRatio ? $aspectRatio : 'unset') ?>;">
+            <div class="content">
+                <?php if ($contentMode == 'cms_block') : ?>
+                    <?= /* @noEscape */ $blockContent ?>
+                <?php elseif ($contentMode == 'image') : ?>
+                    <picture class="cs-notification-modal__image">
+                        <?php if ($imageDesktop) : ?>
+                            <source media="(min-width: 768px)"
+                                    srcset="<?= $escaper->escapeHtml($imageDesktop) ?>"
+                                    type="<?= /* @noEscape */ $imageTypeHelper->getMimeType($imageDesktop); ?>">
+                        <?php endif; ?>
+                        <img loading="lazy"
+                             alt="<?= $escaper->escapeHtml($block->getData('image_alt')) ?>"
+                             src="<?= $escaper->escapeHtml($imageMobile) ?>"
+                             type="<?= /* @noEscape */ $imageTypeHelper->getMimeType($imageMobile); ?>">
+                    </picture>
+                <?php endif; ?>
+            </div>
+            <input type="text" id="<?= /* @noEscape */ $copyToclipboardId ?>" class="cs-visually-hidden" aria-label="<?= $escaper->escapeHtml(__('Copy to clipboard')) ?>" value="">
+        </div>
+    </div>
+
+    <script type="text/x-magento-init">
+        {
+            "#<?= /* @noEscape */ $modalId ?>": {
+                "MageSuite_WidgetNotificationModal/js/notification-modal": {
+                    "modalType": "<?= $escaper->escapeJs($modalType) ?>",
+                    "modalId": "<?= /* @noEscape */ $modalId ?>",
+                    "modalTitle": "<?= $escaper->escapeJs($title) ?>",
+                    "triggerSelectors": "<?= $escaper->escapeJs($triggerSelectors ? $triggerSelectors : '') ?>",
+                    "additionalModalClasses": "<?= $escaper->escapeJs($additionalModalClasses) ?>",
+                    "copyToclipboardId": "<?= /* @noEscape */ $copyToclipboardId ?>",
+                    "showAfter": "<?= $escaper->escapeJs($showAfter) ?>",
+                    "dateFrom": "<?= $escaper->escapeJs($dateFrom) ?>",
+                    "dateTo": "<?= $escaper->escapeJs($dateTo) ?>",
+                    "reopenPolicy": "<?= $escaper->escapeJs($reopenPolicy) ?>",
+                    "cookieExpiration": "<?= $escaper->escapeJs($cookieExpiration) ?>"
+                }
+            }
+        }
+    </script>
+
+    <link href="<?= /* @noEscape */ $block->getViewFileUrl('css/notification-modal-widget.css') ?>" rel="stylesheet">
+<?php endif; ?>

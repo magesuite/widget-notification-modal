@@ -1,0 +1,13 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:MageSuite_Changelog:etc/changelog.xsd">
+    <module id="MageSuite_WidgetNotificationModal" name="MageSuite_WidgetNotificationModal">
+        <changelog>
+            <tag version="1.0.0" date="2023-02-27">
+                <entry>
+                    <type>FEATURE</type>
+                    <overview>Init module</overview>
+                    <ticket_id>TOYS-625</ticket_id>
+                </entry>
+            </tag>
+        </changelog>
+    </module>
+</config>
