@@ -1,0 +1,225 @@
+<?xml version="1.0" ?>
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
+    <widget class="MageSuite\WidgetNotificationModal\Block\Widget\NotificationModal" id="notification_modal">
+        <label>Notification modal</label>
+        <description>Create notification modal for campaigns</description>
+        <parameters>
+            <parameter name="content_mode" xsi:type="select" visible="true">
+                <label translate="true">Content mode</label>
+                <description translate="true">
+                    <![CDATA[What kind of content would you like to display (CMS block / Image)?]]>
+                </description>
+                <options>
+                    <option name="cms_block" value="cms_block">
+                        <label>CMS block</label>
+                    </option>
+                    <option name="image" value="image">
+                        <label>Image</label>
+                    </option>
+                </options>
+            </parameter>
+            <parameter name="block_id" xsi:type="block" visible="true" required="true">
+                <label translate="true">Block</label>
+                <description translate="true">
+                    <![CDATA[Select static block to display modal content]]>
+                </description>
+                <depends>
+                    <parameter name="content_mode" value="cms_block" />
+                </depends>
+                <block class="Magento\Cms\Block\Adminhtml\Block\Widget\Chooser">
+                    <data>
+                        <item name="button" xsi:type="array">
+                            <item name="open" xsi:type="string" translate="true">Select Block...</item>
+                        </item>
+                    </data>
+                </block>
+            </parameter>
+            <parameter name="image_mobile" xsi:type="block" required="true" visible="true">
+                <label translate="true">Image mobile</label>
+                <depends>
+                    <parameter name="content_mode" value="image" />
+                </depends>
+                <block class="MageSuite\FileUpload\Block\Adminhtml\Widget\FileChooser">
+                    <data>
+                        <item name="button" xsi:type="array">
+                            <item name="open" xsi:type="string">Choose file...</item>
+                        </item>
+                    </data>
+                </block>
+            </parameter>
+            <parameter name="image_desktop" xsi:type="block" required="false" visible="true">
+                <label translate="true">Image desktop</label>
+                <depends>
+                    <parameter name="content_mode" value="image" />
+                </depends>
+                <block class="MageSuite\FileUpload\Block\Adminhtml\Widget\FileChooser">
+                    <data>
+                        <item name="button" xsi:type="array">
+                            <item name="open" xsi:type="string">Choose file...</item>
+                        </item>
+                    </data>
+                </block>
+            </parameter>
+            <parameter name="image_alt" xsi:type="text" required="true" visible="true">
+                <label translate="true">Image alt attribute</label>
+                <depends>
+                    <parameter name="content_mode" value="image" />
+                </depends>
+            </parameter>
+            <parameter name="show_after" xsi:type="text" visible="true">
+                <label translate="true">Show modal after X second</label>
+                <description translate="true">
+                    <![CDATA[Leave empty modal should not be triggered automatically.]]>
+                </description>
+            </parameter>
+            <parameter name="trigger_selectors" xsi:type="text" visible="true">
+                <label translate="true">Trigger selectors</label>
+                <description translate="true">
+                    <![CDATA[Add selectors separated by commas. Leave empty if there are no trigger elements.]]>
+                </description>
+            </parameter>
+            <parameter name="reopen_policy" xsi:type="select" visible="true">
+                <label translate="true">Reopen policy</label>
+                <description translate="true">
+                    <![CDATA[Show modal again after:]]>
+                </description>
+                <options>
+                    <option name="never" value="never">
+                        <label>Never</label>
+                    </option>
+                    <option name="session" value="session">
+                        <label>On new session</label>
+                    </option>
+                    <option name="days" value="days">
+                        <label>A few days (type below)</label>
+                    </option>
+                    <option name="always" value="always" selected="true">
+                        <label>Always</label>
+                    </option>
+                </options>
+            </parameter>
+            <parameter name="cookie_expiration" xsi:type="text" required="true" visible="true">
+                <label translate="true">Cookie expiration</label>
+                <description translate="true">
+                    <![CDATA[How long after closing the modal should not be shown (in days).]]>
+                </description>
+                <depends>
+                    <parameter name="reopen_policy" value="days" />
+                </depends>
+            </parameter>
+            <parameter name="type" xsi:type="select" visible="true">
+                <label translate="true">Modal type</label>
+                <options>
+                    <option name="popup" value="popup">
+                        <label>Popup</label>
+                    </option>
+                    <option name="slide" value="slide">
+                        <label>Slide</label>
+                    </option>
+                    <option name="default" value="default">
+                        <label>Mobile slide / desktop popup (default)</label>
+                    </option>
+                </options>
+            </parameter>
+            <parameter name="title" xsi:type="text" visible="true">
+                <label translate="true">Modal title</label>
+                <description translate="true">
+                    <![CDATA[Leave empty in order to hide modal header]]>
+                </description>
+            </parameter>
+            <parameter name="remove_spaces" xsi:type="select" visible="true">
+                <label translate="true">Hide padding space inside modal</label>
+                <options>
+                    <option name="no" value="0">
+                        <label translate="true">No</label>
+                    </option>
+                    <option name="yes" value="1">
+                        <label translate="true">Yes</label>
+                    </option>
+                </options>
+            </parameter>
+            <parameter name="modal_position" xsi:type="select" visible="true">
+                <label translate="true">Position modal</label>
+                <description translate="true">
+                    <![CDATA[This setting will work only with popup modal type.<br>
+                    Can be left empty if default modal position should be used.]]>
+                </description>
+                <options>
+                    <option name="default" value="default">
+                        <label translate="true">Default</label>
+                    </option>
+                    <option name="top-left" value="top-left">
+                        <label translate="true">Top-left</label>
+                    </option>
+                    <option name="top-center" value="top-center">
+                        <label translate="true">Top-center</label>
+                    </option>
+                    <option name="top-right" value="top-right">
+                        <label translate="true">Top-right</label>
+                    </option>
+                    <option name="center-left" value="center-left">
+                        <label translate="true">Center-left</label>
+                    </option>
+                    <option name="center-center" value="center-center">
+                        <label translate="true">Center-center</label>
+                    </option>
+                    <option name="center-right" value="center-right">
+                        <label translate="true">Center-right</label>
+                    </option>
+                    <option name="bottom-left" value="bottom-left">
+                        <label translate="true">Bottom-left</label>
+                    </option>
+                    <option name="bottom-center" value="bottom-center">
+                        <label translate="true">Bottom-center</label>
+                    </option>
+                    <option name="bottom-right" value="bottom-right">
+                        <label translate="true">Bottom-right</label>
+                    </option>
+                </options>
+            </parameter>
+            <parameter name="aspect_ratio" xsi:type="text" visible="true">
+                <label translate="true">Aspect ratio</label>
+                <description translate="true">
+                    <![CDATA[Set modal aspect ratio, f.e.: 2/3. Can be left empty. <br>
+                    This setting will not be added to slide modal type.]]>
+                </description>
+            </parameter>
+            <parameter name="user_type" xsi:type="select" visible="true">
+                <label translate="true">Display widget only for</label>
+                <options>
+                    <option name="all" value="all">
+                        <label>All users</label>
+                    </option>
+                    <option name="logged" value="logged">
+                        <label>Logged-in</label>
+                    </option>
+                    <option name="guest" value="guest">
+                        <label>Guest</label>
+                    </option>
+                </options>
+            </parameter>
+            <parameter name="date_from" xsi:type="block" required="false" visible="true">
+                <label translate="true">Date from</label>
+                <block class="MageSuite\WidgetNotificationModal\Block\Adminhtml\Widget\DatePicker" />
+            </parameter>
+            <parameter name="date_to" xsi:type="block" required="false" visible="true">
+                <label translate="true">Date to</label>
+                <block class="MageSuite\WidgetNotificationModal\Block\Adminhtml\Widget\DatePicker" />
+            </parameter>
+            <parameter name="template" xsi:type="select" required="true" visible="true">
+                <label translate="true">Template</label>
+                <options>
+                    <option name="default" value="MageSuite_WidgetNotificationModal::widget/notification-modal.phtml" selected="true">
+                        <label translate="true">Default template</label>
+                    </option>
+                </options>
+            </parameter>
+        </parameters>
+        <containers>
+            <container name="notification.modal.wrapper">
+                <template name="default" value="default" />
+            </container>
+        </containers>
+    </widget>
+</widgets>
