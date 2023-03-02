@@ -1,15 +1,18 @@
 {
-  "name": "creativestyle/magesuite-widget-notification-modal",
-  "description": "Extension adds widget with notification modal",
-  "type": "magento2-module",
-  "homepage": "https://creativestyle.de",
-  "license": "OSL-3.0",
-  "autoload": {
-    "files": [
-      "registration.php"
-    ],
-    "psr-4": {
-      "MageSuite\\WidgetNotificationModal\\": ""
+    "name": "creativestyle/magesuite-widget-notification-modal",
+    "description": "Extension adds widget with notification modal",
+    "type": "magento2-module",
+    "homepage": "https://creativestyle.de",
+    "license": "OSL-3.0",
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "MageSuite\\WidgetNotificationModal\\": ""
+        }
+    },
+    "require": {
+        "creativestyle/magesuite-file-upload": "*"
     }
-  }
 }
