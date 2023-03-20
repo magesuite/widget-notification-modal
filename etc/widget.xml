@@ -99,6 +99,54 @@
                     </option>
                 </options>
             </parameter>
+            <parameter name="reopen_after" xsi:type="text" visible="true">
+                <label translate="true">Reopen modal after</label>
+                <description translate="true">
+                    <![CDATA[If reopen policy is set to "Always" define time to open modal again (in seconds)<br>
+                    Leave the field empty if the "Reopen on pages" field is filled.]]>
+                </description>
+                <depends>
+                    <parameter name="reopen_policy" value="always" />
+                </depends>
+            </parameter>
+            <parameter name="reopen_on_pages" xsi:type="text" visible="true">
+                <label translate="true">Reopen on pages</label>
+                <description translate="true">
+                    <![CDATA[Fill with page comma separated body selectors on which modal should be reopened.<br>
+                    Example of selectors: ".category-women.catalog-category-view,.product-ina-compression-short"<br>
+                    Leave the field empty if the "Reopen modal after" field is filled. ]]>
+                </description>
+                <depends>
+                    <parameter name="reopen_policy" value="always" />
+                </depends>
+            </parameter>
+            <parameter name="secondary_reopen_policy" xsi:type="select" visible="true">
+                <label translate="true">Reopen policy after second opening</label>
+                <description translate="true">
+                    <![CDATA[Show modal again after. <br>
+                    If the widget policy allows to reopen modal, consider setting other values than always <br>
+                    in order to avoid shpwing the modal too many times to the user. <br>
+                    If the "Reopen on pages" field is filled "always" value should be set if modal should appear on every page <br>
+                    defined as body selector. ]]>
+                </description>
+                <options>
+                    <option name="never" value="never">
+                        <label>Never</label>
+                    </option>
+                    <option name="session" value="session">
+                        <label>On new session</label>
+                    </option>
+                    <option name="days" value="days">
+                        <label>A few days (type below)</label>
+                    </option>
+                    <option name="always" value="always" selected="true">
+                        <label>Always</label>
+                    </option>
+                </options>
+                <depends>
+                    <parameter name="reopen_policy" value="always" />
+                </depends>
+            </parameter>
             <parameter name="cookie_expiration" xsi:type="text" required="true" visible="true">
                 <label translate="true">Cookie expiration</label>
                 <description translate="true">
@@ -106,6 +154,15 @@
                 </description>
                 <depends>
                     <parameter name="reopen_policy" value="days" />
+                </depends>
+            </parameter>
+            <parameter name="secondary_cookie_expiration" xsi:type="text" required="true" visible="true">
+                <label translate="true">Cookie expiration</label>
+                <description translate="true">
+                    <![CDATA[How long after closing the modal should not be shown (in days).]]>
+                </description>
+                <depends>
+                    <parameter name="secondary_reopen_policy" value="days" />
                 </depends>
             </parameter>
             <parameter name="type" xsi:type="select" visible="true">

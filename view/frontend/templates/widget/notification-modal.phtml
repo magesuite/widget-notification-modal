@@ -37,6 +37,11 @@ $dateTo = $block->getData('date_to');
 $reopenPolicy = $block->getData('reopen_policy');
 $cookieExpiration = (int)$block->getData('cookie_expiration');
 
+$secondaryReopenPolicy = $block->getData('secondary_reopen_policy');
+$reopenAfter = $block->getData('reopen_after');
+$reopenOnPages = $block->getData('reopen_on_pages');
+$secondaryCookieExpiration = $block->getData('secondary_cookie_expiration');
+
 $additionalModalClasses = $removeModalSpaces ? ' cs-notification-modal__modal--no-spaces' : '';
 $additionalModalClasses .= !$modalType || $modalType == 'popup' ? ' cs-notification-modal__modal--popup-on-mobile' : '';
 $additionalModalClasses .= (!$modalType || $modalType == 'popup') && $modalPosition && $modalPosition != 'default' ? '  cs-notification-modal__modal--positioned cs-notification-modal__modal--' . $modalPosition : '';
@@ -88,7 +93,11 @@ $copyToclipboardId = 'copytoclipboard-' . $nameInLayout;
                     "dateFrom": "<?= $escaper->escapeJs($dateFrom) ?>",
                     "dateTo": "<?= $escaper->escapeJs($dateTo) ?>",
                     "reopenPolicy": "<?= $escaper->escapeJs($reopenPolicy) ?>",
-                    "cookieExpiration": "<?= $escaper->escapeJs($cookieExpiration) ?>"
+                    "secondaryReopenPolicy": "<?= $escaper->escapeJs($secondaryReopenPolicy) ?>",
+                    "reopenAfter": "<?= $escaper->escapeJs($reopenAfter) ?>",
+                    "reopenOnPages": "<?= $escaper->escapeJs($reopenOnPages) ?>",
+                    "cookieExpiration": "<?= $escaper->escapeJs($cookieExpiration) ?>",
+                    "secondaryCookieExpiration": "<?= $escaper->escapeJs($secondaryCookieExpiration) ?>"
                 }
             }
         }
