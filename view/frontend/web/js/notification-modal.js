@@ -44,6 +44,17 @@ define([
 			if (this._getShouldBeDisplayed()) {
 				this._initModal();
 			}
+
+			console.log(sessionStorage.getItem('session'));
+			if (!sessionStorage.getItem('session')) {
+				sessionStorage.setItem('session', JSON.stringify(new Date()));
+
+				const cartCount = JSON.parse(localStorage.getItem('mage-cache-storage'))['cart']['summary_count'];
+
+				if (parseint(cartCount) > 0) {
+					$.removeCookie(this.sessionItemSeenName);
+				}
+			}
 		},
 
 		_initModal: function() {
