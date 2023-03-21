@@ -15,6 +15,13 @@
                     <ticket_id>RK-696</ticket_id>
                 </entry>
             </tag>
+            <tag version="1.0.1" date="2023-03-22">
+                <entry>
+                    <type>FEATURE</type>
+                    <overview>Adjust coupon code coping classes</overview>
+                    <ticket_id>RK-703</ticket_id>
+                </entry>
+            </tag>
         </changelog>
     </module>
 </config>
