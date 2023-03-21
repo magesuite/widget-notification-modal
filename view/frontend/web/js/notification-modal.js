@@ -19,7 +19,11 @@ define([
 			dateFrom: false,
 			dateTo: false,
 			reopenPolicy: 'always',
-			cookieExpiration: 1
+			secondaryReopenPolicy: 'always',
+			reopenAfter: false,
+			reopenOnPages: '',
+			cookieExpiration: 1,
+			secondaryCookieExpiration: 1
 		},
 
 		REOPEN_POLICES: {
@@ -31,6 +35,11 @@ define([
 
 		_create: function () {
 			this.sessionItemSeenName = `cs-notification-modal-${this.options.modalId}-seen`;
+			this.sessionItemOpenCountName = `cs-notification-modal-${this.options.modalId}-open-count`;
+
+			const countCookie = $.cookie(this.sessionItemOpenCountName);
+			this.openingCount = countCookie ? parseInt(JSON.parse(countCookie).count, 10) : 0;
+			this.lastSeen = countCookie ? JSON.parse(countCookie).lastSeen : false;
 
 			if (this._getShouldBeDisplayed()) {
 				this._initModal();
@@ -58,11 +67,22 @@ define([
 			}
 		},
 
-		_afterModalInitialised: function() {
+		_afterModalInitialised: function() {			
 			this._setAspectRatio();
-			this._showModalAfterTimeout();
-			this._doNotShowModalAgainActions();
+			this._reopenPolicyActions();
 			this._copyCouponCodeToClipboard();
+
+			if (this.openingCount !== 1) {
+				this._showModalAfterTimeout(parseInt(this.options.showAfter, 10));
+			} else {
+				if (this.options.reopenAfter) {
+					this._reopenModal();
+				}
+
+				if (this.options.reopenOnPages) {
+					this._reopenModalOnPages();
+				}
+			}
 		},
 
 		_setAspectRatio: function() {
@@ -77,8 +97,7 @@ define([
 			}
 		},
 
-		_showModalAfterTimeout: function() {
-			const timeout = parseInt(this.options.showAfter, 10);
+		_showModalAfterTimeout: function(timeout) {
 			if (Number.isNaN(timeout)) {
 				return;
 			}
@@ -110,31 +129,51 @@ define([
 			}
 		},
 
-		_doNotShowModalAgainActions: function() {
+		_reopenPolicyActions: function() {
 			const $modal = $(`#${this.options.modalId}`);
+			const self = this;
 
 			$modal.on('modalclosed', function () {
-				this._setDoNotShowModalAgain();
-				$modal.data('mage-modal').openModal = () => false;
+				this._onModalClosed();
 			}.bind(this));
 
 			$(`#${this.options.modalId} .cs-image-teaser__cta, #${this.options.modalId} a, #${this.options.modalId} button`).on('click', function (ev) {
 				ev.preventDefault();
 
-				this._setDoNotShowModalAgain();
-				$modal.data('mage-modal').openModal = () => false;
-
 				if (ev.target.classList.contains('coupon-code')) {
 					return;
 				}
 
-				$modal.modal('closeModal');
+				self.modal.closeModal();
 
 				const target = ev.target;
 				const href = target.tagName === 'A' ? target.href : target.closest('.cs-image-teaser__link').href;
 
 				document.location = href;
 			}.bind(this));
+		},
+
+		_onModalClosed: function () {
+			const policy = this.openingCount === 0 ? this.options.reopenPolicy : this.options.secondaryReopenPolicy;
+			this._handleReopenPolicy(policy);
+
+			if (this.openingCount === 0) {
+				if (this.options.reopenAfter) {
+					this._showModalAfterTimeout(parseInt(this.options.reopenAfter, 10));
+				}
+			} else {
+				if (this.options.secondaryReopenPolicy !== 'always') {
+					$.removeCookie(this.sessionItemOpenCountName);
+				}
+			}
+
+			this._handleOpeningCount();
+
+			if (!this.options.reopenAfter || !this.options.reopenOnPages) {
+				const $modal = $(`#${this.options.modalId}`);
+
+				$modal.data('mage-modal').openModal = () => false;
+			}
 		},
 
 		_getShouldBeDisplayed: function () {
@@ -171,8 +210,8 @@ define([
 			return !(!!parsedDateTo && parsedDateTo < currentDate);
 		},
 
-		_setDoNotShowModalAgain: function () {
-			switch (this.options.reopenPolicy) {
+		_handleReopenPolicy: function (reopenPolicy) {
+			switch (reopenPolicy) {
 				case this.REOPEN_POLICES.never:
 					const expiresNever = new Date();
 					expiresNever.setTime(expiresNever.getTime() + (365 * 24 * 60 * 60 * 1000));
@@ -185,7 +224,7 @@ define([
 
 				case this.REOPEN_POLICES.days:
 					const expires = new Date();
-					let cookieExpiration = parseInt(this.options.cookieExpiration);
+					let cookieExpiration = this.openingCount === 0 ? parseInt(this.options.cookieExpiration) : parseInt(this.options.secondaryCookieExpiration);
 					cookieExpiration = !Number.isNaN(cookieExpiration) ? cookieExpiration : 3;
 
 					expires.setTime(expires.getTime() + (cookieExpiration * 24 * 60 * 60 * 1000));
@@ -195,6 +234,31 @@ define([
 				case this.REOPEN_POLICES.always:
 				default:
 					return
+			}
+		},
+
+		_handleOpeningCount: function () {
+			this.openingCount++;
+			$.cookie(this.sessionItemOpenCountName, JSON.stringify({count: this.openingCount, lastSeen: new Date()}));
+		},
+
+		_reopenModal: function () {
+			const lastSeen = Date.parse(this.lastSeen);
+			const now = new Date();
+
+			const secsFromLastSeen = Math.round(Math.abs(Date.parse(now) - lastSeen) / 1000);
+			const reopenAfter = parseInt(this.options.reopenAfter, 10);
+
+			if (reopenAfter < secsFromLastSeen) {
+				this.modal.openModal();
+			} else {
+				this._showModalAfterTimeout(reopenAfter - secsFromLastSeen);
+			}
+		},
+
+		_reopenModalOnPages: function () {
+			if ($(this.options.reopenOnPages).length) {
+				this.modal.openModal();
 			}
 		}
 	});
