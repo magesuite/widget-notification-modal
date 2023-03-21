@@ -52,8 +52,6 @@ define([
 					this._initModal();
 				}
 			}
-
-			debugger;
 		},
 
 		_initModal: function() {
