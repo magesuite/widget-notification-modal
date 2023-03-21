@@ -125,12 +125,9 @@
                 <description translate="true">
                     <![CDATA[Show modal again after. <br>
                     If the widget policy allows to reopen modal, consider setting other values than always <br>
-                    in order to avoid shpwing the modal too many times to the user. <br>
+                    in order to avoid showing the modal too many times to the user. <br>
                     If the "Reopen on pages" field is filled "always" value should be set if modal should appear on every page. ]]>
                 </description>
-                <depends>
-                    <parameter name="reopen_policy" value="always" />
-                </depends>
                 <options>
                     <option name="never" value="never">
                         <label>Never</label>
@@ -145,6 +142,9 @@
                         <label>Always</label>
                     </option>
                 </options>
+                <depends>
+                    <parameter name="reopen_policy" value="always" />
+                </depends>
             </parameter>
             <parameter name="cookie_expiration" xsi:type="text" required="true" visible="true">
                 <label translate="true">Cookie expiration</label>

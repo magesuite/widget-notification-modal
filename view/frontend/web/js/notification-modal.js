@@ -14,7 +14,7 @@ define([
 			triggerSelectors: '',
 			additionalModalClasses: '',
 			copyToclipboardId: '',
-			showAfter: 0,
+			showAfter: false,
 			sessionItemSeenName: '',
 			dateFrom: false,
 			dateTo: false,
