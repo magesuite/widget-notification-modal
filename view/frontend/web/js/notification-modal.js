@@ -14,7 +14,7 @@ define([
 			triggerSelectors: '',
 			additionalModalClasses: '',
 			copyToclipboardId: '',
-			showAfter: false,
+			showAfter: 0,
 			sessionItemSeenName: '',
 			dateFrom: false,
 			dateTo: false,
@@ -23,7 +23,8 @@ define([
 			reopenAfter: false,
 			reopenOnPages: '',
 			cookieExpiration: 1,
-			secondaryCookieExpiration: 1
+			secondaryCookieExpiration: 1,
+			reopenOnAbandonedCart: false
 		},
 
 		REOPEN_POLICES: {
@@ -37,23 +38,16 @@ define([
 			this.sessionItemSeenName = `cs-notification-modal-${this.options.modalId}-seen`;
 			this.sessionItemOpenCountName = `cs-notification-modal-${this.options.modalId}-open-count`;
 
+			if (this.options.reopenOnAbandonedCart) {
+				this._handleAbandonedCart();
+			}
+
 			const countCookie = $.cookie(this.sessionItemOpenCountName);
 			this.openingCount = countCookie ? parseInt(JSON.parse(countCookie).count, 10) : 0;
 			this.lastSeen = countCookie ? JSON.parse(countCookie).lastSeen : false;
 
 			if (this._getShouldBeDisplayed()) {
 				this._initModal();
-			}
-
-			console.log(sessionStorage.getItem('session'));
-			if (!sessionStorage.getItem('session')) {
-				sessionStorage.setItem('session', JSON.stringify(new Date()));
-
-				const cartCount = JSON.parse(localStorage.getItem('mage-cache-storage'))['cart']['summary_count'];
-
-				if (parseint(cartCount) > 0) {
-					$.removeCookie(this.sessionItemSeenName);
-				}
 			}
 		},
 
@@ -84,7 +78,7 @@ define([
 			this._copyCouponCodeToClipboard();
 
 			if (this.openingCount === 0) {
-				this._showModalAfterTimeout(parseInt(this.options.showAfter, 10));
+				this._showModalAfterTimeout(parseInt(this.options.showAfter, 10) || 0);
 			} else {
 				if (this.options.reopenAfter) {
 					this._reopenModal();
@@ -275,7 +269,24 @@ define([
 			if ($(this.options.reopenOnPages).length) {
 				this.modal.openModal();
 			}
-		}
+		},
+
+		_handleAbandonedCart: function () {
+			// If the session is new and there is at least one item in the cart reset modal cookies and show modal
+			// according to initial rules
+			if (!sessionStorage.getItem('session')) {
+				sessionStorage.setItem('session', JSON.stringify(new Date()));
+
+				const mageCache = JSON.parse(localStorage.getItem('mage-cache-storage'));
+				const cart = mageCache ? mageCache['cart'] : false;
+				const cartCount = cart ? parseInt(cart['summary_count']) : 0;
+
+				if (cartCount > 0) {
+					$.removeCookie(this.sessionItemSeenName);
+					$.removeCookie(this.sessionItemOpenCountName);
+				}
+			}
+		},
 	});
 
 	return $.mgs.notificationWidgetModal;

@@ -23,7 +23,7 @@ $imageDesktop = $block->getData('image_desktop');
 $modalType = $block->getData('type');
 $modalType = !$modalType || $modalType == 'default' ? 'popup' : $modalType;
 
-$showAfter = $block->getData('show_after');
+$showAfter = (int)$block->getData('show_after');
 $triggerSelectors = $block->getData('trigger_selectors');
 
 $removeModalSpaces = $block->getData('remove_spaces');
@@ -41,6 +41,8 @@ $secondaryReopenPolicy = $block->getData('secondary_reopen_policy');
 $reopenAfter = $block->getData('reopen_after');
 $reopenOnPages = $block->getData('reopen_on_pages');
 $secondaryCookieExpiration = $block->getData('secondary_cookie_expiration');
+
+$reopenOnAbandonedCart = $block->getData('reopen_on_abandoned_cart');
 
 $additionalModalClasses = $removeModalSpaces ? ' cs-notification-modal__modal--no-spaces' : '';
 $additionalModalClasses .= !$modalType || $modalType == 'popup' ? ' cs-notification-modal__modal--popup-on-mobile' : '';
@@ -97,7 +99,8 @@ $copyToclipboardId = 'copytoclipboard-' . $nameInLayout;
                     "reopenAfter": "<?= $escaper->escapeJs($reopenAfter) ?>",
                     "reopenOnPages": "<?= $escaper->escapeJs($reopenOnPages) ?>",
                     "cookieExpiration": "<?= $escaper->escapeJs($cookieExpiration) ?>",
-                    "secondaryCookieExpiration": "<?= $escaper->escapeJs($secondaryCookieExpiration) ?>"
+                    "secondaryCookieExpiration": "<?= $escaper->escapeJs($secondaryCookieExpiration) ?>",
+                    "reopenOnAbandonedCart": "<?= $escaper->escapeJs($reopenOnAbandonedCart) ?>"
                 }
             }
         }

@@ -22,6 +22,13 @@
                     <ticket_id>RK-703</ticket_id>
                 </entry>
             </tag>
+            <tag version="1.0.2" date="2023-03-22">
+                <entry>
+                    <type>FEATURE</type>
+                    <overview>Add FE based abandoned cart modal trigger</overview>
+                    <ticket_id>RK-698</ticket_id>
+                </entry>
+            </tag>
         </changelog>
     </module>
 </config>

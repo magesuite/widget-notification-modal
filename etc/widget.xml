@@ -126,9 +126,11 @@
                     <![CDATA[Show modal again after. <br>
                     If the widget policy allows to reopen modal, consider setting other values than always <br>
                     in order to avoid shpwing the modal too many times to the user. <br>
-                    If the "Reopen on pages" field is filled "always" value should be set if modal should appear on every page <br>
-                    defined as body selector. ]]>
+                    If the "Reopen on pages" field is filled "always" value should be set if modal should appear on every page. ]]>
                 </description>
+                <depends>
+                    <parameter name="reopen_policy" value="always" />
+                </depends>
                 <options>
                     <option name="never" value="never">
                         <label>Never</label>
@@ -143,9 +145,6 @@
                         <label>Always</label>
                     </option>
                 </options>
-                <depends>
-                    <parameter name="reopen_policy" value="always" />
-                </depends>
             </parameter>
             <parameter name="cookie_expiration" xsi:type="text" required="true" visible="true">
                 <label translate="true">Cookie expiration</label>
@@ -164,6 +163,21 @@
                 <depends>
                     <parameter name="secondary_reopen_policy" value="days" />
                 </depends>
+            </parameter>
+            <parameter name="reopen_on_abandoned_cart" xsi:type="select" visible="true">
+                <label translate="true">Reopen on abandoned cart</label>
+                <description translate="true">
+                    <![CDATA[Reopen policies will be ignored when a new session is opened in the browser 
+                    and a user has at leat one product in their cart.]]>
+                </description>
+                <options>
+                    <option name="no" value="0">
+                        <label translate="true">No</label>
+                    </option>
+                    <option name="yes" value="1">
+                        <label translate="true">Yes</label>
+                    </option>
+                </options>
             </parameter>
             <parameter name="type" xsi:type="select" visible="true">
                 <label translate="true">Modal type</label>
