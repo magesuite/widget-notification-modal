@@ -164,21 +164,6 @@
                     <parameter name="secondary_reopen_policy" value="days" />
                 </depends>
             </parameter>
-            <parameter name="reopen_on_abandoned_cart" xsi:type="select" visible="true">
-                <label translate="true">Reopen on abandoned cart</label>
-                <description translate="true">
-                    <![CDATA[Reopen policies will be ignored when a new session is opened in the browser 
-                    and a user has at leat one product in their cart.]]>
-                </description>
-                <options>
-                    <option name="no" value="0">
-                        <label translate="true">No</label>
-                    </option>
-                    <option name="yes" value="1">
-                        <label translate="true">Yes</label>
-                    </option>
-                </options>
-            </parameter>
             <parameter name="type" xsi:type="select" visible="true">
                 <label translate="true">Modal type</label>
                 <options>
@@ -267,6 +252,9 @@
                     </option>
                     <option name="guest" value="guest">
                         <label>Guest</label>
+                    </option>
+                    <option name="abandoned_cart" value="abandoned_cart">
+                        <label>Abandoned cart</label>
                     </option>
                 </options>
             </parameter>

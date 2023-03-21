@@ -24,7 +24,7 @@ define([
 			reopenOnPages: '',
 			cookieExpiration: 1,
 			secondaryCookieExpiration: 1,
-			reopenOnAbandonedCart: false
+			openOnAbandonedCart: false
 		},
 
 		REOPEN_POLICES: {
@@ -38,17 +38,22 @@ define([
 			this.sessionItemSeenName = `cs-notification-modal-${this.options.modalId}-seen`;
 			this.sessionItemOpenCountName = `cs-notification-modal-${this.options.modalId}-open-count`;
 
-			if (this.options.reopenOnAbandonedCart) {
-				this._handleAbandonedCart();
-			}
-
 			const countCookie = $.cookie(this.sessionItemOpenCountName);
 			this.openingCount = countCookie ? parseInt(JSON.parse(countCookie).count, 10) : 0;
 			this.lastSeen = countCookie ? JSON.parse(countCookie).lastSeen : false;
 
+
 			if (this._getShouldBeDisplayed()) {
-				this._initModal();
+				if (this.options.openOnAbandonedCart) {
+					if (this._isAbandonedCart()) {
+						this._initModal();
+					}
+				} else {
+					this._initModal();
+				}
 			}
+
+			debugger;
 		},
 
 		_initModal: function() {
@@ -271,7 +276,7 @@ define([
 			}
 		},
 
-		_handleAbandonedCart: function () {
+		_isAbandonedCart: function () {
 			// If the session is new and there is at least one item in the cart reset modal cookies and show modal
 			// according to initial rules
 			if (!sessionStorage.getItem('session')) {
@@ -281,10 +286,7 @@ define([
 				const cart = mageCache ? mageCache['cart'] : false;
 				const cartCount = cart ? parseInt(cart['summary_count']) : 0;
 
-				if (cartCount > 0) {
-					$.removeCookie(this.sessionItemSeenName);
-					$.removeCookie(this.sessionItemOpenCountName);
-				}
+				return cartCount;
 			}
 		},
 	});
