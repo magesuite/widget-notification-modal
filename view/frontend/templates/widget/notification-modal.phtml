@@ -10,7 +10,9 @@ $customerHelper = $this->helper(\MageSuite\Frontend\Helper\Customer::class);
 $imageTypeHelper = $this->helper(\MageSuite\ThemeHelpers\Helper\ImageType::class);
 $isLoggedIn = $customerHelper->isLoggedIn();
 $userType = $block->getData('user_type');
-$canShowBlockToUser = $userType == 'all' || $userType == 'logged' && $isLoggedIn || $userType == 'guest' && !$isLoggedIn;
+$canShowBlockToUser = $userType == 'all' || $userType == 'logged' && $isLoggedIn || $userType == 'guest' && !$isLoggedIn || $userType == 'abandoned_cart';
+
+$openOnAbandonedCart = $userType == 'abandoned_cart' || false;
 
 $nameInLayout = $block->getNameInLayout();
 $cmsBlockId = $block->getData('block_id');
@@ -23,7 +25,7 @@ $imageDesktop = $block->getData('image_desktop');
 $modalType = $block->getData('type');
 $modalType = !$modalType || $modalType == 'default' ? 'popup' : $modalType;
 
-$showAfter = $block->getData('show_after');
+$showAfter = (int)$block->getData('show_after');
 $triggerSelectors = $block->getData('trigger_selectors');
 
 $removeModalSpaces = $block->getData('remove_spaces');
@@ -97,7 +99,8 @@ $copyToclipboardId = 'copytoclipboard-' . $nameInLayout;
                     "reopenAfter": "<?= $escaper->escapeJs($reopenAfter) ?>",
                     "reopenOnPages": "<?= $escaper->escapeJs($reopenOnPages) ?>",
                     "cookieExpiration": "<?= $escaper->escapeJs($cookieExpiration) ?>",
-                    "secondaryCookieExpiration": "<?= $escaper->escapeJs($secondaryCookieExpiration) ?>"
+                    "secondaryCookieExpiration": "<?= $escaper->escapeJs($secondaryCookieExpiration) ?>",
+                    "openOnAbandonedCart": "<?= $escaper->escapeJs($openOnAbandonedCart) ?>"
                 }
             }
         }

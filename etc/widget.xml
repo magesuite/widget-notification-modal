@@ -125,9 +125,8 @@
                 <description translate="true">
                     <![CDATA[Show modal again after. <br>
                     If the widget policy allows to reopen modal, consider setting other values than always <br>
-                    in order to avoid shpwing the modal too many times to the user. <br>
-                    If the "Reopen on pages" field is filled "always" value should be set if modal should appear on every page <br>
-                    defined as body selector. ]]>
+                    in order to avoid showing the modal too many times to the user. <br>
+                    If the "Reopen on pages" field is filled "always" value should be set if modal should appear on every page. ]]>
                 </description>
                 <options>
                     <option name="never" value="never">
@@ -253,6 +252,9 @@
                     </option>
                     <option name="guest" value="guest">
                         <label>Guest</label>
+                    </option>
+                    <option name="abandoned_cart" value="abandoned_cart">
+                        <label>Abandoned cart</label>
                     </option>
                 </options>
             </parameter>

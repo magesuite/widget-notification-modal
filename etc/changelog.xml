@@ -21,6 +21,18 @@
                     <overview>Move notification block to the bottom of the page</overview>
                 </entry>
             </tag>
+            <tag version="1.0.3" date="2023-03-22">
+                <entry>
+                    <type>FEATURE</type>
+                    <overview>Adjust coupon code coping classes</overview>
+                    <ticket_id>RK-703</ticket_id>
+                </entry>
+                <entry>
+                    <type>FEATURE</type>
+                    <overview>Introduce FE-based abandoned cart user type</overview>
+                    <ticket_id>RK-698</ticket_id>
+                </entry>
+            </tag>
         </changelog>
     </module>
 </config>

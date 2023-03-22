@@ -23,7 +23,8 @@ define([
 			reopenAfter: false,
 			reopenOnPages: '',
 			cookieExpiration: 1,
-			secondaryCookieExpiration: 1
+			secondaryCookieExpiration: 1,
+			openOnAbandonedCart: false
 		},
 
 		REOPEN_POLICES: {
@@ -41,8 +42,15 @@ define([
 			this.openingCount = countCookie ? parseInt(JSON.parse(countCookie).count, 10) : 0;
 			this.lastSeen = countCookie ? JSON.parse(countCookie).lastSeen : false;
 
+
 			if (this._getShouldBeDisplayed()) {
-				this._initModal();
+				if (this.options.openOnAbandonedCart) {
+					if (this._isAbandonedCart()) {
+						this._initModal();
+					}
+				} else {
+					this._initModal();
+				}
 			}
 		},
 
@@ -72,8 +80,8 @@ define([
 			this._reopenPolicyActions();
 			this._copyCouponCodeToClipboard();
 
-			if (this.openingCount !== 1) {
-				this._showModalAfterTimeout(parseInt(this.options.showAfter, 10));
+			if (this.openingCount === 0) {
+				this._showModalAfterTimeout(parseInt(this.options.showAfter, 10) || 0);
 			} else {
 				if (this.options.reopenAfter) {
 					this._reopenModal();
@@ -114,17 +122,21 @@ define([
 		},
 
 		_copyCouponCodeToClipboard: function() {
+			const copyCouponCodeEl = document.querySelector(`#${this.options.modalId} .copy-coupon-code`);
 			const couponCodeEl = document.querySelector(`#${this.options.modalId} .coupon-code`);
 			const copyInput = document.querySelector(`#${this.options.copyToclipboardId}`);
 
 			if (couponCodeEl && copyInput) {
 				copyInput.value = couponCodeEl.textContent;
 
-				$(couponCodeEl).on('click', function(e) {
+				$(copyCouponCodeEl).on('click', function(e) {
 					e.preventDefault();
 					copyInput.select();
 					document.execCommand('copy');
 					copyInput.blur();
+
+					copyCouponCodeEl.classList.add('copied');
+					couponCodeEl.classList.add('copied');
 				});
 			}
 		},
@@ -140,7 +152,7 @@ define([
 			$(`#${this.options.modalId} .cs-image-teaser__cta, #${this.options.modalId} a, #${this.options.modalId} button`).on('click', function (ev) {
 				ev.preventDefault();
 
-				if (ev.target.classList.contains('coupon-code')) {
+				if (ev.target.classList.contains('coupon-code') || ev.target.classList.contains('copy-coupon-code')) {
 					return;
 				}
 
@@ -260,7 +272,21 @@ define([
 			if ($(this.options.reopenOnPages).length) {
 				this.modal.openModal();
 			}
-		}
+		},
+
+		_isAbandonedCart: function () {
+			// If the session is new and there is at least one item in the cart reset modal cookies and show modal
+			// according to initial rules
+			if (!sessionStorage.getItem('session')) {
+				sessionStorage.setItem('session', JSON.stringify(new Date()));
+
+				const mageCache = JSON.parse(localStorage.getItem('mage-cache-storage'));
+				const cart = mageCache ? mageCache['cart'] : false;
+				const cartCount = cart ? parseInt(cart['summary_count']) : 0;
+
+				return cartCount;
+			}
+		},
 	});
 
 	return $.mgs.notificationWidgetModal;
