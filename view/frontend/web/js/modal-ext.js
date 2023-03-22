@@ -3,8 +3,7 @@
  * Modification type: extend
  * Reasons:
  * - add modal-no-scroll class to body when modal is opened and calculate scroll position
- * - add no-scroll-child class to page-wrapper element
- * - do not add additional above logic if body already has inline top style property
+ * - do not add additional above logic if minicart is opened
  */
  define(['jquery'], function ($) {
     'use strict';
