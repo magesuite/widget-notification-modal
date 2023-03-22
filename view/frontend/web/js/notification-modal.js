@@ -81,7 +81,7 @@ define([
 			this._copyCouponCodeToClipboard();
 
 			if (this.openingCount === 0) {
-				this._showModalAfterTimeout(parseInt(this.options.showAfter, 10) || 0);
+				this._showModalAutomatically();
 			} else {
 				if (this.options.reopenAfter) {
 					this._reopenModal();
@@ -90,6 +90,20 @@ define([
 				if (this.options.reopenOnPages) {
 					this._reopenModalOnPages();
 				}
+
+				if (!this.options.reopenAfter && !this.options.reopenOnPages) {
+					this._showModalAutomatically();
+				}
+			}
+		},
+
+		_showModalAutomatically: function () {
+			if (!this.options.showAfter && !this.options.triggerSelectors) {
+				this.modal.openModal();
+			}
+
+			if (this.options.showAfter) {
+				this._showModalAfterTimeout(parseInt(this.options.showAfter, 10));
 			}
 		},
 
