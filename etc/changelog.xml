@@ -15,13 +15,13 @@
                     <ticket_id>RK-696</ticket_id>
                 </entry>
             </tag>
-            <tag version="1.0.2" date="2023-03-21">
+            <tag version="1.0.3" date="2023-03-21">
                 <entry>
                     <type>FIX</type>
                     <overview>Move notification block to the bottom of the page</overview>
                 </entry>
             </tag>
-            <tag version="1.0.3" date="2023-03-22">
+            <tag version="1.0.4" date="2023-03-22">
                 <entry>
                     <type>FEATURE</type>
                     <overview>Adjust coupon code coping classes</overview>
