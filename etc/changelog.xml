@@ -33,6 +33,13 @@
                     <ticket_id>RK-698</ticket_id>
                 </entry>
             </tag>
+            <tag version="1.0.6" date="2023-03-21">
+                <entry>
+                    <type>FIX</type>
+                    <overview>Do not scroll to the top when modal is opened</overview>
+                    <ticket_id>RK-708</ticket_id>
+                </entry>
+            </tag>
         </changelog>
     </module>
 </config>
