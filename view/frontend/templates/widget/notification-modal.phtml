@@ -25,7 +25,7 @@ $imageDesktop = $block->getData('image_desktop');
 $modalType = $block->getData('type');
 $modalType = !$modalType || $modalType == 'default' ? 'popup' : $modalType;
 
-$showAfter = (int)$block->getData('show_after');
+$showAfter = $block->getData('show_after');
 $triggerSelectors = $block->getData('trigger_selectors');
 
 $removeModalSpaces = $block->getData('remove_spaces');

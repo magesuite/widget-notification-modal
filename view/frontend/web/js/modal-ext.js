@@ -17,7 +17,7 @@
                     $('body')
                         .addClass('modal-no-scroll')
                         .css({ top: -$currentTopOffset });    
-                }
+                }   
 
                 this._super();
             },
