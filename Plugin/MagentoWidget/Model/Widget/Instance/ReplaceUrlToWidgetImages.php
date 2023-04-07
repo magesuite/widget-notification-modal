@@ -16,11 +16,7 @@ class ReplaceUrlToWidgetImages
 
     public function beforeSetData(\Magento\Widget\Model\Widget\Instance $subject, $key, $data = null): ?array
     {
-        if ($key !== 'widget_parameters') {
-            return null;
-        }
-
-        if (!is_array($data)) {
+        if ($key !== 'widget_parameters' || !is_array($data)) {
             return null;
         }
 
