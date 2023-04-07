@@ -4,4 +4,7 @@
     <type name="Magento\Widget\Model\Widget">
         <plugin name="replace_url_to_widget_images" type="MageSuite\WidgetNotificationModal\Plugin\MageSuiteFileUpload\Model\Widget\ReplaceUrlToWidgetImages" sortOrder="50"/>
     </type>
+    <type name="\Magento\Widget\Model\Widget\Instance">
+        <plugin name="replace_url_to_widget_images" type="MageSuite\WidgetNotificationModal\Plugin\MagentoWidget\Model\Widget\Instance\ReplaceUrlToWidgetImages" sortOrder="100"/>
+    </type>
 </config>
