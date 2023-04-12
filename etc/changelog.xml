@@ -40,6 +40,13 @@
                     <ticket_id>RK-708</ticket_id>
                 </entry>
             </tag>
+            <tag version="1.0.7" date="2023-04-12">
+                <entry>
+                    <type>FIX</type>
+                    <overview>Fix escaping in order to pass proper html classes</overview>
+                    <ticket_id>MGS-5111</ticket_id>
+                </entry>
+            </tag>
         </changelog>
     </module>
 </config>
