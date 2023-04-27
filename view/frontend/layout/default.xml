@@ -4,7 +4,7 @@
         <referenceContainer name="page.wrapper">
             <!-- Container for Notification Modal widget -->
             <container name="notification.modal.wrapper" label="Notification modal Container" htmlTag="div"
-                       htmlClass="cs-container cs-container--notification-modal-widget" after="-" cacheable="false" />
+                       htmlClass="cs-container cs-container--notification-modal-widget" after="-" />
         </referenceContainer>
     </body>
 </page>
