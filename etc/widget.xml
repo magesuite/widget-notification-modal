@@ -15,7 +15,7 @@
                         <label>CMS block</label>
                     </option>
                     <option name="image" value="image">
-                        <label>Image</label>
+                        <label>Image - temporary disabled</label>
                     </option>
                 </options>
             </parameter>
@@ -185,7 +185,12 @@
                 </description>
             </parameter>
             <parameter name="remove_spaces" xsi:type="select" visible="true">
-                <label translate="true">Hide padding space inside modal</label>
+                <label translate="true">Hide padding space and background inside modal</label>
+                <description translate="true">
+                    <![CDATA[Hide padding and background in modal.<br>
+                    When this settings is used set aspect-ratio for modal with the same value as aspect-ratio <br>
+                    of modal content, f.e. aspect-ratio of displayed.]]>
+                </description>
                 <options>
                     <option name="no" value="0">
                         <label translate="true">No</label>
