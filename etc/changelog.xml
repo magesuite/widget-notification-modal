@@ -47,6 +47,13 @@
                     <ticket_id>MGS-5111</ticket_id>
                 </entry>
             </tag>
+            <tag version="1.0.8" date="2023-08-010">
+                <entry>
+                    <type>FIX</type>
+                    <overview>Move fix page jumping after modal is opened to theme-creativeshop</overview>
+                    <ticket_id>MGP-1099</ticket_id>
+                </entry>
+            </tag>
         </changelog>
     </module>
 </config>
