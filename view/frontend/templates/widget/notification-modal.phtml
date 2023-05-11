@@ -50,7 +50,7 @@ $additionalModalClasses .= (!$modalType || $modalType == 'popup') && $modalPosit
 
 $copyToclipboardId = 'copytoclipboard-' . $nameInLayout;
 ?>
-<?php if (($contentMode == 'cms_block' && $cmsBlockId) || ($contentMode == 'image' && $imageMobile) && $canShowBlockToUser) : ?> <?php // phpcs:ignore ?>
+<?php if ($canShowBlockToUser && ($contentMode == 'cms_block' && $cmsBlockId) || ($contentMode == 'image' && $imageMobile)) : ?> <?php // phpcs:ignore ?>
     <?php
     $blockContent = $this->getLayout()
         ->createBlock(\MageSuite\ThemeHelpers\Block\Cms\CacheableBlock::class)
