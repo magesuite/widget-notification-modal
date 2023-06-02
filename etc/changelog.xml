@@ -61,6 +61,13 @@
                     <ticket_id>MGP-1099</ticket_id>
                 </entry>
             </tag>
+            <tag version="1.1" date="2023-06-02">
+                <entry>
+                    <type>FEAT</type>
+                    <overview>New reopen policy: Always - absolute.</overview>
+                    <ticket_id>TOYS-657</ticket_id>
+                </entry>
+            </tag>
         </changelog>
     </module>
 </config>
