@@ -31,7 +31,8 @@ define([
 			never: 'never',
 			session: 'session',
 			days: 'days',
-			always: 'always'
+			always: 'always',
+			always_absolute: 'always_absolute'
 		},
 
 		_create: function () {
@@ -180,6 +181,10 @@ define([
 		},
 
 		_onModalClosed: function () {
+			if (this.options.reopenPolicy === this.REOPEN_POLICES.always_absolute) {
+				return
+			}
+
 			const policy = this.openingCount === 0 ? this.options.reopenPolicy : this.options.secondaryReopenPolicy;
 			this._handleReopenPolicy(policy);
 
@@ -258,6 +263,7 @@ define([
 					break;
 
 				case this.REOPEN_POLICES.always:
+				case this.REOPEN_POLICES.always_absolute:
 				default:
 					return
 			}

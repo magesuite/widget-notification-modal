@@ -97,6 +97,9 @@
                     <option name="always" value="always" selected="true">
                         <label>Always</label>
                     </option>
+                    <option name="always_absolute" value="always_absolute">
+                        <label>Always - absolute</label>
+                    </option>
                 </options>
             </parameter>
             <parameter name="reopen_after" xsi:type="text" visible="true">
