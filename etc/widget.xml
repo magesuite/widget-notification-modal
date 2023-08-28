@@ -249,6 +249,12 @@
                     This setting will not be added to slide modal type.]]>
                 </description>
             </parameter>
+            <parameter name="max_width" xsi:type="text" visible="true">
+                <label translate="true">Max width</label>
+                <description translate="true">
+                    <![CDATA[Set modal max-width (in px) to limit it's width on desktops]]>
+                </description>
+            </parameter>
             <parameter name="user_type" xsi:type="select" visible="true">
                 <label translate="true">Display widget only for</label>
                 <options>
