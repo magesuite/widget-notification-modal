@@ -76,7 +76,7 @@ define([
 			}
 		},
 
-		_afterModalInitialised: function() {			
+		_afterModalInitialised: function() {
 			this._setAspectRatio();
 			this._reopenPolicyActions();
 			this._copyCouponCodeToClipboard();
@@ -114,10 +114,15 @@ define([
 			}
 
 			const aspectRatio = this.element.css('aspect-ratio');
+			const maxWidth = this.element.css('max-width');
 
 			if (aspectRatio && aspectRatio !== 'unset') {
 				this.element.parents('.modal-inner-wrap').css({'aspectRatio': aspectRatio, 'width': 'auto'});
 			}
+
+            if (maxWidth && maxWidth !== 'none') {
+                this.element.parents('.modal-inner-wrap').css({'max-width': maxWidth});
+            }
 		},
 
 		_showModalAfterTimeout: function(timeout) {

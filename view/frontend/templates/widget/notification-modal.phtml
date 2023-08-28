@@ -32,6 +32,7 @@ $removeModalSpaces = $block->getData('remove_spaces');
 $title = $block->getData('title');
 $modalPosition = $block->getData('modal_position');
 $aspectRatio = $block->getData('aspect_ratio');
+$maxWidth = $block->getData('max_width');
 
 $dateFrom = $block->getData('date_from');
 $dateTo = $block->getData('date_to');
@@ -59,7 +60,8 @@ $copyToclipboardId = 'copytoclipboard-' . $nameInLayout;
     ?>
     <div class="cs-notification-modal">
         <div id="<?= /* @noEscape */ $modalId ?>" style="display: none;
-                aspect-ratio:<?= $escaper->escapeHtml($aspectRatio ? $aspectRatio : 'unset') ?>;">
+                aspect-ratio:<?= $escaper->escapeHtmlAttr($aspectRatio ? $aspectRatio : 'unset') ?>;
+                max-width:<?= $escaper->escapeHtmlAttr($maxWidth ? $maxWidth : 'none') ?>;">
             <div class="content">
                 <?php if ($contentMode == 'cms_block') : ?>
                     <?= /* @noEscape */ $blockContent ?>
