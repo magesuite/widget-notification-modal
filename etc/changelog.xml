@@ -82,6 +82,13 @@
                     <ticket_id>LP-2140</ticket_id>
                 </entry>
             </tag>
+            <tag version="1.1.3" date="2023-09-27">
+                <entry>
+                    <type>FIX</type>
+                    <overview>Now valid option will be selected on dropdown list in admin panel at Content / Widgets / [selected widget] / Storefront Properties / Layout Updates / Display on : CMS Pages & Specified Page / CMS Page. Previously in case when more than one CMS Page has the same URL Key and not first of them was selected - after saving, first item was selected on dropdown list in CMS Page.</overview>
+                    <ticket_id>HAKA-2029</ticket_id>
+                </entry>
+            </tag>
         </changelog>
     </module>
 </config>

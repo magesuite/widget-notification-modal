@@ -60,25 +60,23 @@ class Layout extends \Magento\Widget\Block\Adminhtml\Widget\Instance\Edit\Tab\Ma
     protected function getCmsPagesOptions(): array
     {
         $collection = $this->pageCollectionFactory->create();
-        $collection->addFieldToSelect(
-            [
-                \Magento\Cms\Api\Data\PageInterface::IDENTIFIER,
-                \Magento\Cms\Api\Data\PageInterface::TITLE,
-            ]
-        );
         $collection->setOrder(\Magento\Cms\Api\Data\PageInterface::TITLE, \Magento\Framework\Data\Collection::SORT_ORDER_ASC);
 
         $cmsPages = $collection->getItems();
         $options = [];
 
         foreach ($cmsPages as $cmsPage) {
+            $urlKey = $cmsPage->getData(\Magento\Cms\Api\Data\PageInterface::IDENTIFIER);
+            $pageId = $cmsPage->getData(\Magento\Cms\Api\Data\PageInterface::PAGE_ID);
+            $value = sprintf('%s|%s', $urlKey, $pageId);
+
             $options[] = [
                 'label' => sprintf(
                     '%s | %s',
                     $cmsPage->getData(\Magento\Cms\Api\Data\PageInterface::TITLE),
                     $cmsPage->getStoreCode()
                 ),
-                'value' => $cmsPage->getData(\Magento\Cms\Api\Data\PageInterface::IDENTIFIER),
+                'value' => $value
             ];
         }
 
