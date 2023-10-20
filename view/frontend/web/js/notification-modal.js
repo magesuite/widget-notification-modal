@@ -169,19 +169,20 @@ define([
 				this._onModalClosed();
 			}.bind(this));
 
-			$(`#${this.options.modalId} .cs-image-teaser__cta, #${this.options.modalId} a, #${this.options.modalId} button`).on('click', function (ev) {
-				ev.preventDefault();
+			$(`#${this.options.modalId}`).on('click','.cs-image-teaser__cta, a, button:not(.tocart)', function (e) {
+				e.preventDefault();
 
-				if (ev.target.classList.contains('coupon-code') || ev.target.classList.contains('copy-coupon-code')) {
+				if (e.target.classList.contains('coupon-code') || e.target.classList.contains('copy-coupon-code')) {
 					return;
 				}
 
 				self.modal.closeModal();
 
-				const target = ev.target;
-				const href = target.tagName === 'A' ? target.href : target.closest('.cs-image-teaser__link').href;
+                const redirectUrl = e.target.tagName === 'A' ? e.target.href : e.target.closest('.cs-image-teaser__link')?.href;
 
-				document.location = href;
+                if (redirectUrl) {
+                    document.location = redirectUrl;
+                }
 			}.bind(this));
 		},
 
