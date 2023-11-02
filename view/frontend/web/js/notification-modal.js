@@ -15,6 +15,7 @@ define([
 			additionalModalClasses: '',
 			copyToclipboardId: '',
 			showAfter: false,
+			showAfterInactivity: false,
 			sessionItemSeenName: '',
 			dateFrom: false,
 			dateTo: false,
@@ -55,7 +56,7 @@ define([
 			}
 		},
 
-		_initModal: function() {
+		_initModal: function () {
 			const modalOptions = {
 				'type': this.options.modalType,
 				'title': this.options.modalTitle,
@@ -76,7 +77,7 @@ define([
 			}
 		},
 
-		_afterModalInitialised: function() {
+		_afterModalInitialised: function () {
 			this._setAspectRatio();
 			this._reopenPolicyActions();
 			this._copyCouponCodeToClipboard();
@@ -98,17 +99,23 @@ define([
 			}
 		},
 
+		// Trigger modal opening automatically, based on settings in admin panel
 		_showModalAutomatically: function () {
-			if (!this.options.showAfter && !this.options.triggerSelectors) {
+			if (!this.options.showAfter && !this.options.showAfterInactivity && !this.options.triggerSelectors) {
 				this.modal.openModal();
 			}
 
 			if (this.options.showAfter) {
 				this._showModalAfterTimeout(parseInt(this.options.showAfter, 10));
 			}
+
+			if (this.options.showAfterInactivity) {
+				this._showModalAfterInactivityPeriod(parseInt(this.options.showAfterInactivity, 10));
+			}
 		},
 
-		_setAspectRatio: function() {
+		// Set proper aspect ratio (based on settings in admin panel). Only for popup
+		_setAspectRatio: function () {
 			if (this.options.modalType === 'slide') {
 				return;
 			}
@@ -120,19 +127,20 @@ define([
 				this.element.parents('.modal-inner-wrap').css({'aspectRatio': aspectRatio, 'width': 'auto'});
 			}
 
-            if (maxWidth && maxWidth !== 'none') {
-                this.element.parents('.modal-inner-wrap').css({'max-width': maxWidth});
-            }
+			if (maxWidth && maxWidth !== 'none') {
+				this.element.parents('.modal-inner-wrap').css({'max-width': maxWidth});
+			}
 		},
 
-		_showModalAfterTimeout: function(timeout) {
+		// Trigger modal opening after given period of time
+		_showModalAfterTimeout: function (timeout) {
 			if (Number.isNaN(timeout)) {
 				return;
 			}
 
 			const self = this;
 			setTimeout(
-				function() {
+				function () {
 					if (self.modal) {
 						self.modal.openModal();
 					}
@@ -141,7 +149,46 @@ define([
 			);
 		},
 
-		_copyCouponCodeToClipboard: function() {
+		// Trigger modal opening after given period of unactivity on the page (no mouse move, no key press)
+		_showModalAfterInactivityPeriod: function (timeout) {
+			if (Number.isNaN(timeout)) {
+				return;
+			}
+
+			const self = this;
+			let time = null;
+			let timerId = null;
+
+			window.addEventListener('load', resetTimer)
+			document.addEventListener('mousemove', () => {
+				throttleFunction(resetTimer, 500);
+			});
+
+			document.addEventListener('keypress', () => {
+				throttleFunction(resetTimer, 500);
+			});
+
+			function resetTimer() {
+				clearTimeout(time);
+				time = setTimeout(function () {
+					if (self.modal) {
+						self.modal.openModal();
+					}
+				}, timeout * 1000)
+			}
+
+			function throttleFunction(func, delay) {
+				if (timerId) {
+					return
+				}
+				timerId = setTimeout(function () {
+					func()
+					timerId = null;
+				}, delay)
+			}
+		},
+
+		_copyCouponCodeToClipboard: function () {
 			const copyCouponCodeEl = document.querySelector(`#${this.options.modalId} .copy-coupon-code`);
 			const couponCodeEl = document.querySelector(`#${this.options.modalId} .coupon-code`);
 			const copyInput = document.querySelector(`#${this.options.copyToclipboardId}`);
@@ -149,7 +196,7 @@ define([
 			if (couponCodeEl && copyInput) {
 				copyInput.value = couponCodeEl.textContent;
 
-				$(copyCouponCodeEl).on('click', function(e) {
+				$(copyCouponCodeEl).on('click', function (e) {
 					e.preventDefault();
 					copyInput.select();
 					document.execCommand('copy');
@@ -161,7 +208,7 @@ define([
 			}
 		},
 
-		_reopenPolicyActions: function() {
+		_reopenPolicyActions: function () {
 			const $modal = $(`#${this.options.modalId}`);
 			const self = this;
 
@@ -169,7 +216,7 @@ define([
 				this._onModalClosed();
 			}.bind(this));
 
-			$(`#${this.options.modalId}`).on('click','.cs-image-teaser__cta, a, button:not(.tocart)', function (e) {
+			$(`#${this.options.modalId}`).on('click', '.cs-image-teaser__cta, a, button:not(.tocart)', function (e) {
 				e.preventDefault();
 
 				if (e.target.classList.contains('coupon-code') || e.target.classList.contains('copy-coupon-code')) {
@@ -178,11 +225,11 @@ define([
 
 				self.modal.closeModal();
 
-                const redirectUrl = e.target.tagName === 'A' ? e.target.href : e.target.closest('.cs-image-teaser__link')?.href;
+				const redirectUrl = e.target.tagName === 'A' ? e.target.href : e.target.closest('.cs-image-teaser__link')?.href;
 
-                if (redirectUrl) {
-                    document.location = redirectUrl;
-                }
+				if (redirectUrl) {
+					document.location = redirectUrl;
+				}
 			}.bind(this));
 		},
 

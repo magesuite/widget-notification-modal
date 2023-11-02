@@ -70,7 +70,15 @@
             <parameter name="show_after" xsi:type="text" visible="true">
                 <label translate="true">Show modal after X second</label>
                 <description translate="true">
-                    <![CDATA[Leave empty modal should not be triggered automatically.]]>
+                    <![CDATA[Leave empty if modal should not be triggered automatically.]]>
+                </description>
+            </parameter>
+            <parameter name="show_after_inactivity" xsi:type="text" visible="true">
+                <label translate="true">Show modal after X second of inactivity</label>
+                <description translate="true">
+                    <![CDATA[Leave empty if modal should not be shown after inactivity period.<br>
+                    Leave empty if `Show modal after X second` is filled.<br>
+                    Reopen policy settings still apply here so for it to display always it should be set to `always - absolute`.]]>
                 </description>
             </parameter>
             <parameter name="trigger_selectors" xsi:type="text" visible="true">
