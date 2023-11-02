@@ -26,6 +26,7 @@ $modalType = $block->getData('type');
 $modalType = !$modalType || $modalType == 'default' ? 'popup' : $modalType;
 
 $showAfter = $block->getData('show_after');
+$showAfterInactivity = $block->getData('show_after_inactivity');
 $triggerSelectors = $block->getData('trigger_selectors');
 
 $removeModalSpaces = $block->getData('remove_spaces');
@@ -94,6 +95,7 @@ $copyToclipboardId = 'copytoclipboard-' . $nameInLayout;
                     "additionalModalClasses": "<?= $escaper->escapeHtml($additionalModalClasses) ?>",
                     "copyToclipboardId": "<?= /* @noEscape */ $copyToclipboardId ?>",
                     "showAfter": "<?= $escaper->escapeJs($showAfter) ?>",
+                    "showAfterInactivity": "<?= $escaper->escapeJs($showAfterInactivity) ?>",
                     "dateFrom": "<?= $escaper->escapeJs($dateFrom) ?>",
                     "dateTo": "<?= $escaper->escapeJs($dateTo) ?>",
                     "reopenPolicy": "<?= $escaper->escapeJs($reopenPolicy) ?>",
