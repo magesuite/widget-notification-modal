@@ -103,6 +103,13 @@
                     <ticket_id>LP-2183</ticket_id>
                 </entry>
             </tag>
+			<tag version="1.1.7" date="2023-10-30">
+				<entry>
+					<type>FEATURE</type>
+					<overview>Add inactivity period option for mobile</overview>
+					<ticket_id>LP-2183</ticket_id>
+				</entry>
+			</tag>
         </changelog>
     </module>
 </config>
