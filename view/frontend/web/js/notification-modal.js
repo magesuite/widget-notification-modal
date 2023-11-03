@@ -160,12 +160,13 @@ define([
 			let timerId = null;
 
 			window.addEventListener('load', resetTimer)
-			document.addEventListener('mousemove', () => {
-				throttleFunction(resetTimer, 500);
-			});
 
-			document.addEventListener('keypress', () => {
-				throttleFunction(resetTimer, 500);
+			const events = ['mousemove', 'keypress', 'touchstart'];
+
+			events.forEach(function(name) {
+				document.addEventListener(name, () => {
+					throttleFunction(resetTimer, 500);
+				});
 			});
 
 			function resetTimer() {
