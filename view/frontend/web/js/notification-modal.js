@@ -235,11 +235,17 @@ define([
 		},
 
 		_onModalClosed: function () {
+            let policy;
 			if (this.options.reopenPolicy === this.REOPEN_POLICES.always_absolute) {
 				return
 			}
 
-			const policy = this.openingCount === 0 ? this.options.reopenPolicy : this.options.secondaryReopenPolicy;
+            if (this.options.secondaryReopenPolicy !== "") {
+			    policy = this.openingCount === 0 ? this.options.reopenPolicy : this.options.secondaryReopenPolicy;
+            } else {
+                policy = this.options.reopenPolicy;
+            }
+
 			this._handleReopenPolicy(policy);
 
 			if (this.openingCount === 0) {
