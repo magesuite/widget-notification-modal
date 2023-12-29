@@ -229,7 +229,7 @@ define([
 				const redirectUrl = e.target.tagName === 'A' ? e.target.href : e.target.closest('.cs-image-teaser__link')?.href;
 
 				if (redirectUrl) {
-					document.location = redirectUrl;
+					setTimeout(() => { window.location = redirectUrl }, 500);
 				}
 			}.bind(this));
 		},
