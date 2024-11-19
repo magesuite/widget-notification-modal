@@ -105,13 +105,19 @@ class Instance extends \Magento\Widget\Model\Widget\Instance
                     ];
                     if ($pageGroupData['for'] == self::SPECIFIC_ENTITIES) {
                         $layoutHandleUpdates = [];
-                        foreach (explode(',', $pageGroupData['entities'] ?? '') as $entity) {
+
+                        $entities = $pageGroupData['entities'] ?? '';
+                        $entities = str_replace(' ', '', $entities);
+                        $entities = explode(',', $entities);
+
+                        foreach ($entities as $entity) {
                             $layoutHandleUpdates[] = str_replace(
                                 '{{ID}}',
                                 $entity,
                                 $this->_specificEntitiesLayoutHandles[$pageGroup['page_group']]
                             );
                         }
+
                         $tmpPageGroup['entities'] = $pageGroupData['entities'];
                         $tmpPageGroup['layout_handle_updates'] = $layoutHandleUpdates;
                     }
