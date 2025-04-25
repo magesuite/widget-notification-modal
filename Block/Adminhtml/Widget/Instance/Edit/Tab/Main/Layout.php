@@ -15,7 +15,7 @@ class Layout extends \Magento\Widget\Block\Adminhtml\Widget\Instance\Edit\Tab\Ma
         \Magento\Catalog\Model\Product\Type $productType,
         \Magento\Cms\Model\ResourceModel\Page\CollectionFactory $pageCollectionFactory,
         array $data = [],
-        \Magento\Framework\Serialize\Serializer\Json $serializer = null
+        ?\Magento\Framework\Serialize\Serializer\Json $serializer = null
     ) {
         parent::__construct($context, $productType, $data, $serializer);
 

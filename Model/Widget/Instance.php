@@ -27,11 +27,11 @@ class Instance extends \Magento\Widget\Model\Widget\Instance
         \Magento\Widget\Helper\Conditions $conditionsHelper,
         \Magento\Framework\Serialize\Serializer\Json $serializer,
         \Magento\Cms\Api\PageRepositoryInterface $pageRepository,
-        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        ?\Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
+        ?\Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $relatedCacheTypes = [],
         array $data = [],
-        \Magento\Framework\View\Model\Layout\Update\ValidatorFactory $xmlValidatorFactory = null
+        ?\Magento\Framework\View\Model\Layout\Update\ValidatorFactory $xmlValidatorFactory = null
     ) {
         parent::__construct(
             $context,
