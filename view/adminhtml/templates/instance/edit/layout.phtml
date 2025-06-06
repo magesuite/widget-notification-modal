@@ -2,7 +2,7 @@
 /**
  * Template overridden in order to add layout update to specific CMS pages [RK-695]
  * l. 274 + l.354
- * Aligned with Magento 2.4.5-p1 at 06/2023
+ * Aligned with Magento 2.4.8 in 06/2025
  */
 
 /** @var \Magento\Widget\Block\Adminhtml\Widget\Instance\Edit\Tab\Main\Layout $block */
@@ -28,7 +28,7 @@ require([
     'mage/template',
     'Magento_Ui/js/modal/alert',
     "prototype",
-    "extjs/ext-tree-checkbox"
+    "jquery/jstree/jquery.jstree"
 ], function (jQuery, mageTemplate, alert) {
 
 //<![CDATA[
@@ -45,7 +45,7 @@ var pageGroupTemplate = '<div class="fieldset-wrapper page_group_container" id="
     '<div class="fieldset-wrapper-content">'+
 
 script;
-foreach ($block->getDisplayOnContainers() as $container) :
+foreach ($block->getDisplayOnContainers() as $container):
     $scriptString .= <<<script
     '<div class="no-display {$escaper->escapeJs($container['code'])} group_container" '+
         'id="{$escaper->escapeJs($container['name'])}_<%- data.id %>">'+
@@ -127,15 +127,15 @@ script;
                 '<a class="widget-option-chooser" href="#" '+
                 'title="{$escaper->escapeJs(__('Open Chooser'))}">' +
                     '<img src="{$escaper->escapeJs(
-        $escaper->escapeUrl($block->getViewFileUrl('images/rule_chooser_trigger.gif'))
-    )}" '+
+                        $escaper->escapeUrl($block->getViewFileUrl('images/rule_chooser_trigger.gif'))
+                    )}" '+
                     'alt="{$escaper->escapeJs(__('Open Chooser'))}" />' +
                 '</a>&nbsp;' +
                 '<a id="widget-apply-<%- data.id %>" href="#" '+
                 'title="{$escaper->escapeJs(__('Apply'))}">' +
                     '<img src="{$escaper->escapeJs(
-        $escaper->escapeUrl($block->getViewFileUrl('images/rule_component_apply.gif'))
-    )}" '+
+                        $escaper->escapeUrl($block->getViewFileUrl('images/rule_component_apply.gif'))
+                    )}" '+
                     'alt="{$escaper->escapeJs(__('Apply'))}" />' +
                 '</a>' +
             '</p>'+
@@ -351,10 +351,8 @@ var WidgetInstance = {
                 additional.position = data.position;
                 additional.for_value = data.for_value;
                 additional.template = '';
-
                 if (data.group == 'pages' || data.group == 'page_layouts' || data.group == 'specified_cms_page') {
                     layoutSelect = pageGroup.down('select#layout_handle');
-
                     if (layoutSelect) {
                         for (var i = 0; i < layoutSelect.options.length; i++) {
                         var currentOptionValue = layoutSelect.options[i].value;
@@ -614,7 +612,7 @@ window.WidgetInstance = WidgetInstance;
 jQuery(function(){
 
 script;
-foreach ($block->getPageGroups() as $pageGroup) :
+foreach ($block->getPageGroups() as $pageGroup):
     $scriptString .= <<<script
 
         WidgetInstance.addPageGroup({$pageGroup});
