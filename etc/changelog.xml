@@ -124,6 +124,13 @@
                     <ticket_id>LP-2261</ticket_id>
                 </entry>
             </tag>
+            <tag version="2.0.0" date="2025-06-09">
+                <entry>
+                    <type>FEATURE</type>
+                    <overview>Align to Magento 2.4.8</overview>
+                    <ticket_id>MGS-5471</ticket_id>
+                </entry>
+            </tag>
         </changelog>
     </module>
 </config>
