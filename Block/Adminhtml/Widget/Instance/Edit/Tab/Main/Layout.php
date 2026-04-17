@@ -67,14 +67,17 @@ class Layout extends \Magento\Widget\Block\Adminhtml\Widget\Instance\Edit\Tab\Ma
 
         foreach ($cmsPages as $cmsPage) {
             $urlKey = $cmsPage->getData(\Magento\Cms\Api\Data\PageInterface::IDENTIFIER);
-            $pageId = $cmsPage->getData(\Magento\Cms\Api\Data\PageInterface::PAGE_ID);
-            $value = sprintf('%s|%s', $urlKey, $pageId);
+
+            /** @var @see vendor/magento/module-cms/Helper/Page.php:185 */
+            $value = str_replace('/', '_', $urlKey);
+
+            $storeCode = $cmsPage->getStoreCode();
 
             $options[] = [
                 'label' => sprintf(
                     '%s | %s',
                     $cmsPage->getData(\Magento\Cms\Api\Data\PageInterface::TITLE),
-                    $cmsPage->getStoreCode()
+                    $storeCode == 'admin' ? __('Global') : $storeCode,
                 ),
                 'value' => $value
             ];
