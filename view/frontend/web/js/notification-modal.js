@@ -193,17 +193,20 @@ define([
 			const copyCouponCodeEl = document.querySelector(`#${this.options.modalId} .copy-coupon-code`);
 			const couponCodeEl = document.querySelector(`#${this.options.modalId} .coupon-code`);
 			const copyInput = document.querySelector(`#${this.options.copyToclipboardId}`);
+			const triggerEl = copyCouponCodeEl || couponCodeEl;
 
 			if (couponCodeEl && copyInput) {
 				copyInput.value = couponCodeEl.textContent;
 
-				$(copyCouponCodeEl).on('click', function (e) {
+				$(triggerEl).on('click', function (e) {
 					e.preventDefault();
 					copyInput.select();
 					document.execCommand('copy');
 					copyInput.blur();
 
-					copyCouponCodeEl.classList.add('copied');
+					if (copyCouponCodeEl) {
+						copyCouponCodeEl.classList.add('copied');
+					}
 					couponCodeEl.classList.add('copied');
 				});
 			}
