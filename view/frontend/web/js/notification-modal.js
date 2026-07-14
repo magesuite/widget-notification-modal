@@ -189,43 +189,85 @@ define([
 		},
 
 		_copyCouponCodeToClipboard: function () {
-			const couponCodeEls = document.querySelectorAll(`#${this.options.modalId} .coupon-code`);
-			const copyCouponCodeEls = document.querySelectorAll(`#${this.options.modalId} .copy-coupon-code`);
+			const couponCodeEls = this.element[0].querySelectorAll('.coupon-code');
 
 			if (!couponCodeEls.length) {
 				return;
 			}
 
-			couponCodeEls.forEach(function (couponCodeEl, index) {
-				const copyCouponCodeEl = copyCouponCodeEls[index];
+			couponCodeEls.forEach(function (couponCodeEl) {
+				const copyCouponCodeEl = this._findCopyCouponCodeElFor(couponCodeEl);
 				const triggerEl = copyCouponCodeEl || couponCodeEl;
 
-				$(triggerEl).on('click', function (e) {
+				$(triggerEl).on('click', (async function (e) {
 					e.preventDefault();
-					this._copyTextToClipboard(couponCodeEl.textContent);
 
-					if (copyCouponCodeEl) {
-						copyCouponCodeEl.classList.add('copied');
+					try {
+						await this._copyTextToClipboard(couponCodeEl.textContent);
+
+						if (copyCouponCodeEl) {
+							copyCouponCodeEl.classList.add('copied');
+						}
+						couponCodeEl.classList.add('copied');
+					} catch (error) {
+						console.error('Copying coupon code to clipboard failed');
 					}
-					couponCodeEl.classList.add('copied');
-				}.bind(this));
+				}).bind(this));
 			}.bind(this));
 		},
 
-		_copyTextToClipboard: function (text) {
-			if (navigator.clipboard) {
-				navigator.clipboard.writeText(text);
-				return;
+		_findCopyCouponCodeElFor: function (couponCodeEl) {
+			const modalEl = this.element[0];
+			let container = couponCodeEl.parentElement;
+
+			while (container) {
+				if (container.querySelectorAll('.coupon-code').length > 1) {
+					return null;
+				}
+
+				const copyCouponCodeEl = container.querySelector('.copy-coupon-code');
+
+				if (copyCouponCodeEl) {
+					return copyCouponCodeEl;
+				}
+
+				if (container === modalEl) {
+					break;
+				}
+
+				container = container.parentElement;
 			}
 
+			return null;
+		},
+
+		_copyTextToClipboard: async function (text) {
+			if (navigator.clipboard) {
+				try {
+					await navigator.clipboard.writeText(text);
+					return;
+				} catch (error) {
+					this._copyTextToClipboardFallback(text);
+					return;
+				}
+			}
+
+			this._copyTextToClipboardFallback(text);
+		},
+
+		_copyTextToClipboardFallback: function (text) {
 			const temporaryInput = document.createElement('textarea');
 			temporaryInput.value = text;
 			temporaryInput.classList.add('cs-visually-hidden');
 
 			document.body.appendChild(temporaryInput);
 			temporaryInput.select();
-			document.execCommand('copy');
+			const wasCopied = document.execCommand('copy');
 			document.body.removeChild(temporaryInput);
+
+			if (!wasCopied) {
+				throw new Error('Copying text to clipboard via execCommand failed');
+			}
 		},
 
 		_reopenPolicyActions: function () {
