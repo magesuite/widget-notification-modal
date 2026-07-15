@@ -218,24 +218,23 @@ define([
 
 		_findCopyCouponCodeElFor: function (couponCodeEl) {
 			const modalEl = this.element[0];
-			let container = couponCodeEl.parentElement;
 
-			while (container) {
+			for (let container = couponCodeEl.parentElement; container; container = container.parentElement) {
 				if (container.querySelectorAll('.coupon-code').length > 1) {
 					return null;
 				}
 
-				const copyCouponCodeEl = container.querySelector('.copy-coupon-code');
+				const copyCouponCodeEl = container.matches('.copy-coupon-code')
+					? container
+					: container.querySelector('.copy-coupon-code');
 
 				if (copyCouponCodeEl) {
 					return copyCouponCodeEl;
 				}
 
 				if (container === modalEl) {
-					break;
+					return null;
 				}
-
-				container = container.parentElement;
 			}
 
 			return null;
