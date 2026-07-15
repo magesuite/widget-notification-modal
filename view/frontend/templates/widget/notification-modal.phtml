@@ -49,8 +49,6 @@ $secondaryCookieExpiration = $block->getData('secondary_cookie_expiration');
 $additionalModalClasses = $removeModalSpaces ? ' cs-notification-modal__modal--no-spaces' : '';
 $additionalModalClasses .= !$modalType || $modalType == 'popup' ? ' cs-notification-modal__modal--popup-on-mobile' : '';
 $additionalModalClasses .= (!$modalType || $modalType == 'popup') && $modalPosition && $modalPosition != 'default' ? '  cs-notification-modal__modal--positioned cs-notification-modal__modal--' . $modalPosition : '';
-
-$copyToclipboardId = 'copytoclipboard-' . $nameInLayout;
 ?>
 <?php if ($canShowBlockToUser && ($contentMode == 'cms_block' && $cmsBlockId) || ($contentMode == 'image' && $imageMobile)) : ?> <?php // phpcs:ignore ?>
     <?php
@@ -80,7 +78,6 @@ $copyToclipboardId = 'copytoclipboard-' . $nameInLayout;
                     </picture>
                 <?php endif; ?>
             </div>
-            <input type="text" id="<?= /* @noEscape */ $copyToclipboardId ?>" class="cs-visually-hidden" aria-label="<?= $escaper->escapeHtml(__('Copy to clipboard')) ?>" value="">
         </div>
     </div>
 
@@ -93,7 +90,6 @@ $copyToclipboardId = 'copytoclipboard-' . $nameInLayout;
                     "modalTitle": "<?= $escaper->escapeJs($title) ?>",
                     "triggerSelectors": "<?= $escaper->escapeHtml($triggerSelectors ? $triggerSelectors : '') ?>",
                     "additionalModalClasses": "<?= $escaper->escapeHtml($additionalModalClasses) ?>",
-                    "copyToclipboardId": "<?= /* @noEscape */ $copyToclipboardId ?>",
                     "showAfter": "<?= $escaper->escapeJs($showAfter) ?>",
                     "showAfterInactivity": "<?= $escaper->escapeJs($showAfterInactivity) ?>",
                     "dateFrom": "<?= $escaper->escapeJs($dateFrom) ?>",

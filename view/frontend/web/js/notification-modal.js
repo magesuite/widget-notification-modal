@@ -13,7 +13,6 @@ define([
 			modalTitle: '',
 			triggerSelectors: '',
 			additionalModalClasses: '',
-			copyToclipboardId: '',
 			showAfter: false,
 			showAfterInactivity: false,
 			sessionItemSeenName: '',
@@ -190,25 +189,83 @@ define([
 		},
 
 		_copyCouponCodeToClipboard: function () {
-			const copyCouponCodeEl = document.querySelector(`#${this.options.modalId} .copy-coupon-code`);
-			const couponCodeEl = document.querySelector(`#${this.options.modalId} .coupon-code`);
-			const copyInput = document.querySelector(`#${this.options.copyToclipboardId}`);
-			const triggerEl = copyCouponCodeEl || couponCodeEl;
+			const couponCodeEls = this.element[0].querySelectorAll('.coupon-code');
 
-			if (couponCodeEl && copyInput) {
-				copyInput.value = couponCodeEl.textContent;
+			if (!couponCodeEls.length) {
+				return;
+			}
 
-				$(triggerEl).on('click', function (e) {
+			couponCodeEls.forEach(function (couponCodeEl) {
+				const copyCouponCodeEl = this._findCopyCouponCodeElFor(couponCodeEl);
+				const triggerEl = copyCouponCodeEl || couponCodeEl;
+
+				$(triggerEl).on('click', (async function (e) {
 					e.preventDefault();
-					copyInput.select();
-					document.execCommand('copy');
-					copyInput.blur();
 
-					if (copyCouponCodeEl) {
-						copyCouponCodeEl.classList.add('copied');
+					try {
+						await this._copyTextToClipboard(couponCodeEl.textContent);
+
+						if (copyCouponCodeEl) {
+							copyCouponCodeEl.classList.add('copied');
+						}
+						couponCodeEl.classList.add('copied');
+					} catch (error) {
+						console.error('Copying coupon code to clipboard failed');
 					}
-					couponCodeEl.classList.add('copied');
-				});
+				}).bind(this));
+			}.bind(this));
+		},
+
+		_findCopyCouponCodeElFor: function (couponCodeEl) {
+			const modalEl = this.element[0];
+
+			for (let container = couponCodeEl.parentElement; container; container = container.parentElement) {
+				if (container.querySelectorAll('.coupon-code').length > 1) {
+					return null;
+				}
+
+				const copyCouponCodeEl = container.matches('.copy-coupon-code')
+					? container
+					: container.querySelector('.copy-coupon-code');
+
+				if (copyCouponCodeEl) {
+					return copyCouponCodeEl;
+				}
+
+				if (container === modalEl) {
+					return null;
+				}
+			}
+
+			return null;
+		},
+
+		_copyTextToClipboard: async function (text) {
+			if (navigator.clipboard) {
+				try {
+					await navigator.clipboard.writeText(text);
+					return;
+				} catch (error) {
+					this._copyTextToClipboardFallback(text);
+					return;
+				}
+			}
+
+			this._copyTextToClipboardFallback(text);
+		},
+
+		_copyTextToClipboardFallback: function (text) {
+			const temporaryInput = document.createElement('textarea');
+			temporaryInput.value = text;
+			temporaryInput.classList.add('cs-visually-hidden');
+
+			document.body.appendChild(temporaryInput);
+			temporaryInput.select();
+			const wasCopied = document.execCommand('copy');
+			document.body.removeChild(temporaryInput);
+
+			if (!wasCopied) {
+				throw new Error('Copying text to clipboard via execCommand failed');
 			}
 		},
 
