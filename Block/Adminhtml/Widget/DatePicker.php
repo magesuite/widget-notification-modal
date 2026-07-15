@@ -11,9 +11,9 @@ class DatePicker extends \Magento\Framework\View\Element\Template implements \Ma
     ): \Magento\Framework\Data\Form\Element\AbstractElement {
         $element->setData('after_element_html', '
                 <input type="datetime-local"
-                    value="' . $element->getValue() . '"
-                    id="' . $element->getHtmlId() . '"
-                    name="' . $element->getName() . '"
+                    value="' . $this->escapeHtmlAttr((string) $element->getValue()) . '"
+                    id="' . $this->escapeHtmlAttr($element->getHtmlId()) . '"
+                    name="' . $this->escapeHtmlAttr($element->getName()) . '"
                     class="admin__control-text" />');
         $element->setValue(null);
         return $element;
